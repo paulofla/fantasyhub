@@ -6,4 +6,4 @@ COPY package-lock.json package-lock.json
 RUN npm install
 COPY . /app
 
-ENTRYPOINT ["node", "/app/app.js"]
+ENTRYPOINT ["node", "/app/server.js"]
