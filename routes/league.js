@@ -1,13 +1,14 @@
-var express = require('express');
-var fantasy = require('@paulofla/fantasy-data/lib/api/index');
-var router = express.Router();
+const express = require('express');
+const fpl = require('./service/fantasy')
+const CookieJar = require('tough-cookie').CookieJar
+const router = express.Router();
 
 /* GET league listing. */
 router.get('/', function(req, res, next) {
-  var leagueId = 185285;
-  fantasy.default.fpl.League.getStandings(leagueId).then(result => {
-    res.send(result);
-  })
+  session = CookieJar.fromJSON(req.cookies.fantasyhub)
+  fpl.fetchH2HLeagueStandings(session, 185285)
+  .then(league => res.send(league))
+  .catch(error => res.status(500).send(error))
 });
 
 module.exports = router;
