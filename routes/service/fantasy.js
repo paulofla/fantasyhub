@@ -160,6 +160,7 @@ async function fetchMyTeam(
       .then(team => {
         return footballPlayers().then(players => {
           team.picks = team.picks.map(pick => Object.assign({}, pick, players[pick.element]))
+          console.log(team)
           return team
         })
       })

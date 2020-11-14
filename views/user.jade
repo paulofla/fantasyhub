@@ -8,6 +8,7 @@ block content
     ul
       each player in team.picks
         li
+          img(src='https://resources.premierleague.com/premierleague/photos/players/250x250/p' + player.photo.split('.')[0] + '.png', width='50', height='50')
           div= player.first_name + ' ' + player.second_name
           div= 'Captain: ' + player.is_captain
           div= 'Selling Price: ' + player.selling_price
