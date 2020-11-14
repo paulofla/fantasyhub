@@ -8,6 +8,8 @@ block content
     ul
       each player in team.picks
         li
+          div= player.first_name + ' ' + player.second_name
+          div= 'Captain: ' + player.is_captain
           div= 'Selling Price: ' + player.selling_price
           div= 'Captain: ' + player.is_captain
           div= 'Position: ' + player.position

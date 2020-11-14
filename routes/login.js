@@ -11,14 +11,14 @@ router.post('/', function(req, res, next) {
 
     return retrieveUserInformation(res, session)
             .catch(error => {
-              log.console(error)
+              console.log(error)
               res.render('index', { title: 'Express' })
             })
   } else {
     fpl.fetchSession(req.body.username, req.body.password)
     .then(session => retrieveUserInformation(res, session))
     .catch(error => {
-      log.console(error)
+      console.log(error)
       res.render('index', { title: 'Express' })
     })
   }

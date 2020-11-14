@@ -24,6 +24,27 @@ function validateResponse(response) {
   }
 }
 
+const playerCache = {}
+async function footballPlayers() {
+  if (Object.keys(playerCache).length === 0) {
+    return fetch('https://fantasy.premierleague.com/api/bootstrap-static/',
+        {
+          method: 'GET',
+          headers: HEADERS,
+        }).then(res => {
+          return res.json()})
+          .then(context => {
+            context.elements.forEach(player => {
+              playerCache[player.id] = player
+            })
+
+            return playerCache
+        })
+    } else {
+      return Promise.resolve(playerCache)
+    }
+}
+
 async function fetchSession(
   login,
   password,
@@ -136,6 +157,13 @@ async function fetchMyTeam(
     validateResponse(response)
 
     return response.json()
+      .then(team => {
+        return footballPlayers().then(players => {
+          team.picks = team.picks.map(pick => Object.assign({}, pick, players[pick.element]))
+          return team
+        })
+      })
+
   } catch (error) {
     throw error
   }
@@ -145,5 +173,6 @@ module.exports = exports = {
   fetchSession: fetchSession,
   fetchH2HLeagueStandings: fetchH2HLeagueStandings,
   fetchCurrentUser: fetchCurrentUser,
-  fetchMyTeam: fetchMyTeam
+  fetchMyTeam: fetchMyTeam,
+  footballPlayers: footballPlayers
 }
